@@ -46,7 +46,7 @@ export default class HelloWorld extends Vue {
       return this.placeholder.toFixed(2)
     }
     else if (!this.placeholder) {
-      return "Entrer une valeur..."
+      return ". . ."
     }
     else {
       return this.placeholder.toFixed()

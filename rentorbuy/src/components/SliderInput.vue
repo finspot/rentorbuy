@@ -10,7 +10,7 @@
       :max="max"
       style="margin-right: 10px; margin-left: 10px; margin-bottom: 10px; padding-top: 0">
       <template slot="tooltip">
-        <img style="margin: 14px" src="@/assets/rond.png">
+        <img style="margin: 0; margin-top: 14px" src="@/assets/rond.png">
       </template>
     </vue-slide-bar>
   </div>
