@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 10px">
+  <div style="margin: 10px; margin-right: 5px">
     <label>{{ label ? (label + ' : ') : '' }}</label>
     <div :class="rightLabel ? 'ui right labeled input' : 'ui input'" :style="inputStyle">
       <input v-model="value" :placeholder="inputPlaceholder"/>
@@ -35,10 +35,10 @@ export default class HelloWorld extends Vue {
   }
   get inputStyle(): string {
     if (!this.rightLabel) {
-      return "width: 190px; margin-right: 20px; margin-left: 20px"
+      return "width: 160px; margin-right: 20px; margin-left: 20px"
     }
     else {
-      return "width: 150px; margin-right: 60px; margin-left: 20px"
+      return "width: 120px; margin-right: 60px; margin-left: 20px"
     }
   }
   get inputPlaceholder(): string {
