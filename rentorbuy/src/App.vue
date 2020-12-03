@@ -5,10 +5,10 @@
         <img alt="Pretto logo" src="@/assets/logo-pretto.png" style="text-align: left"/>
       </div>
       <a class="item">
-        <router-link to="/">Home</router-link>
+        <router-link to="/">Calculette</router-link>
       </a>
       <a class="item">
-        <router-link to="/about">About</router-link>
+        <router-link to="/about">Données</router-link>
       </a>
     </div>
     <router-view />
@@ -16,6 +16,7 @@
 </template>
 
 <style>
+
 .app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -44,4 +45,5 @@ img {
   text-align: left;
   margin: 20px;
 }
+
 </style>

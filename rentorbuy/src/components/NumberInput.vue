@@ -1,9 +1,9 @@
 <template>
   <div style="margin: 10px; margin-right: 5px">
     <label>{{ label ? (label + ' : ') : '' }}</label>
-    <div :class="rightLabel ? 'ui right labeled input' : 'ui input'" :style="inputStyle">
+    <div :class="computedRightLabel ? 'ui right labeled input' : 'ui input'" :style="inputStyle">
       <input v-model="value" :placeholder="inputPlaceholder"/>
-      <div v-if="rightLabel" class="ui basic label" style="width: 40px; text-align: center">{{rightLabel}}</div>
+      <div v-if="computedRightLabel" class="ui basic label" style="width: 40px; text-align: center">{{computedRightLabel}}</div>
     </div>
   </div>
 </template>
@@ -16,25 +16,25 @@ export default class HelloWorld extends Vue {
   @Prop() private label!: string
   @Prop() private value!: unknown
   @Prop() private placeholder!: number
-  @Prop() private right_label!: string
+  @Prop() private rightLabel!: string
   @Watch('value')
   valueChanged() {
     this.$emit('input', this.value)
   }
 
-  get rightLabel(): string {
-    if (!this.right_label) {
+  get computedRightLabel(): string {
+    if (!this.rightLabel) {
       return "€"
     }
-    else if (this.right_label == "null") {
+    else if (this.rightLabel == "null") {
       return null
     }
     else {
-      return this.right_label
+      return this.rightLabel
     }
   }
   get inputStyle(): string {
-    if (!this.rightLabel) {
+    if (!this.computedRightLabel) {
       return "width: 160px; margin-right: 20px; margin-left: 20px"
     }
     else {
@@ -42,7 +42,7 @@ export default class HelloWorld extends Vue {
     }
   }
   get inputPlaceholder(): string {
-    if (this.rightLabel == "%") {
+    if (this.computedRightLabel == "%") {
       return this.placeholder.toFixed(2)
     }
     else if (!this.placeholder) {
@@ -54,3 +54,11 @@ export default class HelloWorld extends Vue {
   }
 }
 </script>
+
+<style>
+
+.ui.input input::placeholder {
+  color: rgb(133, 133, 133);
+}
+
+</style>

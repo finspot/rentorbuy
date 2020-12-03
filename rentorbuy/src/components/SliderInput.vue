@@ -1,7 +1,7 @@
 <template>
   <div style="margin: 10px">
     <h6>{{label}}</h6>
-    <h5>{{displayedValue}} {{right_label}}</h5>
+    <h5>{{displayedValue.toFixed(2)}} {{rightLabel}}</h5>
     <vue-slide-bar
       v-model="value"
       :processStyle="{ backgroundColor: '#42b983' }"
@@ -31,14 +31,14 @@ export default class HelloWorld extends Vue {
   @Prop() private value!: number
   @Prop() private max!: number
   @Prop() private min!: number
-  @Prop() private right_label!: string
+  @Prop() private rightLabel!: string
   @Watch('value')
   valueChanged() {
     this.$emit('input', this.value)
   }
 
   get displayedValue(): number {
-    if (this.right_label == "%") {
+    if (this.rightLabel == "%") {
       return +this.value / 10
     }
     else {
