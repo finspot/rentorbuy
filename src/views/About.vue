@@ -104,7 +104,7 @@ export default class About extends Vue {
   private backgroundUrl = require("@/assets/background-image.png");
   private choosen = "housing_tax"
 
-  public table(value): any {
+  public table(value: string): any {
     const file = Object.create({
       'housing_tax': HousingTaxes,
       'property_charge': PropertyCharges,
@@ -132,7 +132,7 @@ export default class About extends Vue {
     return out
   }
 
-  public choose(value): void {
+  public choose(value: string): void {
     this.choosen = value
     this.$forceUpdate();
   }

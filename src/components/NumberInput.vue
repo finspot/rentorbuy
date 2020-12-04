@@ -22,7 +22,7 @@ export default class HelloWorld extends Vue {
     this.$emit('input', this.value)
   }
 
-  get computedRightLabel(): string {
+  get computedRightLabel(): any {
     if (!this.rightLabel) {
       return "€"
     }

@@ -7,7 +7,7 @@
     <div class="ui three columns grid">
       <div class="ui three wide column">
         <li class="ui card">
-          <h3>Paramètres</h3>
+          <h3>{{housingTaxes}}</h3>
           <div class="ui divider"></div>
           <slider-input
             :value="computedHomePriceGrowthRate * 1000"
@@ -225,29 +225,29 @@ export default class Home extends Vue {
   private MORTGAGE_RATE = 1.5;
   private RENT_GROWTH_RATE = 1;
   private SAVINGS_RETURN_RATE = 1;
-  private agencyFees = null;
-  private contribution = null;
-  private guarantyFees = null;
-  private homePriceGrowthRate = null;
-  private housingTax = null;
-  private incomes = null;
-  private insuranceRate = null;
-  private monthlySavings = null;
-  private mortgageDuration = null;
-  private mortgageRate = null;
-  private notaryFees = null;
-  private payment = null;
-  private purchaseSurface = null;
-  private price = null;
-  private propertyCharges = null;
-  private propertyTax = null;
-  private propertyTaxRate = null;
-  private rent = null;
-  private rentGrowthRate = null;
-  private savingsReturnRate = null;
-  private zipcode = null;
-  private showing = 'general';
-  private slidevalue = null;
+  private agencyFees: any = null;
+  private contribution: any = null;
+  private guarantyFees: any = null;
+  private homePriceGrowthRate: any = null;
+  private housingTax: any = null;
+  private incomes: any = null;
+  private insuranceRate: any = null;
+  private monthlySavings: any = null;
+  private mortgageDuration: any = null;
+  private mortgageRate: any = null;
+  private notaryFees: any = null;
+  private payment: any = null;
+  private purchaseSurface: any = null;
+  private price: any = null;
+  private propertyCharges: any = null;
+  private propertyTax: any = null;
+  private propertyTaxRate: any = null;
+  private rent: any = null;
+  private rentGrowthRate: any = null;
+  private savingsReturnRate: any = null;
+  private zipcode: any = null;
+  private showing: any = 'general';
+  private slidevalue: any = null;
   private backgroundUrl = require("@/assets/background-image.png");
 
   get computedAgencyFees(): number {
@@ -260,7 +260,7 @@ export default class Home extends Vue {
     return (this.homePriceGrowthRate && +this.homePriceGrowthRate / 100) || this.HOME_PRICE_GROWTH_RATE / 100
   }
   get computedHousingTax(): number {
-    return this.housingTax || ( HousingTaxes[this.department] * this.computedPurchaseSurface )
+    return this.housingTax || ( this.getHashOf(HousingTaxes)[this.department] * this.computedPurchaseSurface )
   }
   get computedInsuranceRate(): number {
     return (this.insuranceRate && (+this.insuranceRate / 1200)) || this.INSURANCE_RATE / 1200
@@ -284,16 +284,27 @@ export default class Home extends Vue {
     return this.price || (this.principal - this.computedGuarantyFees + +this.contribution) / 1.08
   }
   get computedPropertyCharges(): number {
-    return this.propertyCharges || PropertyCharges[this.department] * this.computedPurchaseSurface || PropertyCharges["00"] * this.computedPurchaseSurface
+    return this.propertyCharges || this.getHashOf(PropertyCharges)[this.department] * this.computedPurchaseSurface || PropertyCharges["00"] * this.computedPurchaseSurface
   }
   get computedPropertyTax(): number {
-    return this.propertyTax || RentPriceSqm[this.department] * this.computedPurchaseSurface * 3 * this.computedPropertyTaxRate
+    return this.propertyTax || this.getHashOf(RentPriceSqm)[this.department] * this.computedPurchaseSurface * 3 * this.computedPropertyTaxRate
   }
   get computedPropertyTaxRate(): number {
-    return this.propertyTaxRate && (+this.propertyTaxRate / 100) || PropertyTaxes[this.department] / 100
+    return this.propertyTaxRate && (+this.propertyTaxRate / 100) || this.getHashOf(PropertyTaxes)[this.department] / 100
+  }
+  get computedPurchaseSurface(): number {
+    if (this.purchaseSurface) {
+      return this.purchaseSurface
+    }
+    else if (this.rent) {
+      return this.rent / this.getHashOf(RentPriceSqm)[this.department]
+    }
+    else { 
+      return +this.computedPrice / this.getHashOf(PurchasePriceSqm)[this.department]
+    }
   }
   get computedRent(): number {
-    return this.rent || RentPriceSqm[this.department] * this.computedPurchaseSurface
+    return this.rent || this.getHashOf(RentPriceSqm)[this.department] * this.computedPurchaseSurface
   }
   get computedRentGrowthRate(): number {
     return (this.rentGrowthRate && +this.rentGrowthRate / 100) || this.RENT_GROWTH_RATE / 100
@@ -309,27 +320,16 @@ export default class Home extends Vue {
     return zip.slice(0, 2) == "97" ? zip.slice(0, 3) : zip.slice(0, 2)
   }
   get equilibrium(): number {
-    return this.costs.findIndex(this.rentIsFavorable) + 1
+    return this.costs.findIndex(this.purchaseIsFavorable) + 1
   }
   get principal(): number {
     return (this.computedPayment * ( 1 - ( 1 + this.computedMortgageRate ) ** ( - this.computedMortgagoDuration) )) / this.computedMortgageRate
   }
   get purchaseCosts(): number {
-    return this.costs[this.equilibrium]['purchase']['initialCosts'] + this.costs[this.equilibrium]['purchase']['recuringCosts']
-  }
-  get computedPurchaseSurface(): number {
-    if (this.purchaseSurface) {
-      return this.purchaseSurface
-    }
-    else if (this.rent) {
-      return this.rent / RentPriceSqm[this.department]
-    }
-    else { 
-      return +this.computedPrice / PurchasePriceSqm[this.department]
-    }
+    return this.getHashOf(this.costs)[this.equilibrium]['purchase']['initialCosts'] + this.getHashOf(this.costs)[this.equilibrium]['purchase']['recuringCosts']
   }
   get rentalCosts(): number {
-    return this.costs[this.equilibrium]['rent']['initialCosts'] + this.costs[this.equilibrium]['rent']['recuringCosts']
+    return this.getHashOf(this.costs)[this.equilibrium]['rent']['initialCosts'] + this.getHashOf(this.costs)[this.equilibrium]['rent']['recuringCosts']
   }
 
   public changeZipcode(input: number): void {
@@ -337,6 +337,10 @@ export default class Home extends Vue {
     this.propertyTaxRate = null;
     this.propertyTax = null;
     this.housingTax = null;
+  }
+  public getHashOf(jsonFile: any): any {
+    const result: { [unit: string]: number } = jsonFile
+    return result
   }
   public formatNumber(input: number, i: number): string {
     const stringNumber = (input.toFixed(i)).toString();
@@ -374,7 +378,7 @@ export default class Home extends Vue {
       }
     }
   }
-  public rentIsFavorable(res) {
+  public purchaseIsFavorable(res: any) {
     return res['rent']['finalSavings'] + res['rent']['initialCosts'] + res['rent']['recuringCosts'] >=
       res['purchase']['finalSavings'] + res['purchase']['initialCosts'] + res['purchase']['recuringCosts']
   }
