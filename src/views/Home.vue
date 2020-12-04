@@ -1,13 +1,13 @@
 <template>
   <div class="home" :style="{ backgroundImage: `url(${backgroundUrl})` }">
-    <HelloWorld
+    <!-- Comment <HelloWorld
       msg="Welcome to the Rent Or Buy calculator"
       style="padding: 30px"
-    />
+    /> -->
     <div class="ui three columns grid">
       <div class="ui three wide column">
         <li class="ui card">
-          <h3>{{housingTaxes}}</h3>
+          <h3>Paramètres</h3>
           <div class="ui divider"></div>
           <slider-input
             :value="computedHomePriceGrowthRate * 1000"
