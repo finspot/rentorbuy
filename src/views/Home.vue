@@ -187,12 +187,24 @@
           </div>
         </div>
         <div class="ui centered card" style="margin-bottom: 30px">
-          <div><h3>Capital : {{ formatNumber(principal) }} €</h3></div>
-          <div><h3>Epargne de location : {{ formatNumber(rentFinalSavings(equilibrium)) }} €</h3></div>
-          <div><h3>Epargne d'achat : {{ formatNumber(- getHashOfCosts(equilibrium - 1)['purchase']['finalSavings']) }} €</h3></div>
-          <div><h3>CRD : {{ formatNumber(remainingPrincipal(equilibrium)) }} €</h3></div>
-          <div><h3>Coûts de location : {{ formatNumber(rentalCosts) }} €</h3></div>
-          <div><h3>Coûts d'achat : {{ formatNumber(purchaseCosts) }} €</h3></div>
+          <div class="ui two column grid">
+            <div class="left column">
+              <h4>Capital : </h4>
+              <h4>Epargne de location : </h4>
+              <h4>Epargne d'achat : </h4>
+              <h4>CRD : </h4>
+              <h4>Coûts de location : </h4>
+              <h4>Coûts d'achat : </h4>
+            </div>
+            <div class="ui right column">
+              <h4>{{ formatNumber(principal) }} €</h4>
+              <h4>{{ formatNumber(rentFinalSavings(equilibrium)) }} €</h4>
+              <h4>{{ formatNumber(- getHashOfCosts(equilibrium - 1)['purchase']['finalSavings']) }} €</h4>
+              <h4>{{ formatNumber(remainingPrincipal(equilibrium)) }} €</h4>
+              <h4>{{ formatNumber(rentalCosts) }} €</h4>
+              <h4>{{ formatNumber(purchaseCosts) }} €</h4>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -447,5 +459,13 @@ h5 {
   padding-top: 10px;
   margin-bottom: 20px;
   box-shadow: 0.1px 0.1px 5px #bebebe;
+}
+.left.column {
+  font-size: 1.5rem;
+  text-align: right;
+}
+.right.column {
+  font-size: 1.5rem;
+  text-align: left;
 }
 </style>
