@@ -89,12 +89,6 @@
                 :placeholder="computedPrice"
               />
               <number-input
-                :value="payment"
-                label="Mensualité"
-                @input="payment = $event"
-                :placeholder="computedPayment"
-              />
-              <number-input
                 :value="mortgageRate"
                 label="Taux du prêt"
                 @input="mortgageRate = $event"
@@ -187,9 +181,12 @@
           </div>
         </div>
         <div class="ui centered card" style="margin-bottom: 30px">
+          <h3>Détails du résultat</h3>
+          <div class="ui divider"></div>
           <div class="ui two column grid">
             <div class="left column">
               <h4>Capital : </h4>
+              <h4>Mensualité : </h4>
               <h4>Epargne de location : </h4>
               <h4>Epargne d'achat : </h4>
               <h4>CRD : </h4>
@@ -198,6 +195,7 @@
             </div>
             <div class="ui right column">
               <h4>{{ formatNumber(principal) }} €</h4>
+              <h4>{{ formatNumber(payment) }} €</h4>
               <h4>{{ formatNumber(rentFinalSavings(equilibrium)) }} €</h4>
               <h4>{{ formatNumber(- getHashOfCosts(equilibrium - 1)['purchase']['finalSavings']) }} €</h4>
               <h4>{{ formatNumber(remainingPrincipal(equilibrium)) }} €</h4>
@@ -248,7 +246,6 @@ export default class Home extends Vue {
   private mortgageDuration: any = null;
   private mortgageRate: any = null;
   private notaryFees: any = null;
-  private payment: any = null;
   private purchaseSurface: any = null;
   private price: any = null;
   private propertyCharges: any = null;
@@ -263,22 +260,22 @@ export default class Home extends Vue {
   private backgroundUrl = require("@/assets/background-image.png");
 
   get computedAgencyFees(): number {
-    return this.agencyFees || this.computedRent
+    return +this.agencyFees || this.computedRent
   }
   get computedGuarantyFees(): number {
-    return this.guarantyFees || 0.01 * this.principal
+    return +this.guarantyFees || 0.01 * this.principal
   }
   get computedHomePriceGrowthRate() {
     return (this.homePriceGrowthRate && +this.homePriceGrowthRate / 100) || this.HOME_PRICE_GROWTH_RATE / 100
   }
   get computedHousingTax(): number {
-    return this.housingTax || ( this.getHashOf(HousingTaxes)[this.department] * this.computedPurchaseSurface )
+    return +this.housingTax || ( this.getHashOf(HousingTaxes)[this.department] * this.computedPurchaseSurface )
   }
   get computedInsuranceRate(): number {
     return (this.insuranceRate && (+this.insuranceRate / 1200)) || this.INSURANCE_RATE / 1200
   }
   get computedMonthlySavings(): number {
-    return this.monthlySavings || this.computedPayment - this.computedRent
+    return +this.monthlySavings || this.payment - this.computedRent
   }
   get computedMortgagoDuration(): number {
     return (this.mortgageDuration && (+this.mortgageDuration * 12)) || this.MORTGAGE_DURATION * 12
@@ -287,36 +284,38 @@ export default class Home extends Vue {
     return (this.mortgageRate && (+this.mortgageRate / 1200)) || this.MORTGAGE_RATE / 1200
   }
   get computedNotaryFees(): number {
-    return this.notaryFees || 0.08 * this.computedPrice
-  }
-  get computedPayment(): number {
-    return this.payment || (this.incomes * 0.33)
+    return +this.notaryFees || 0.08 * this.computedPrice
   }
   get computedPrice(): number {
-    return this.price || (this.principal - this.computedGuarantyFees + +this.contribution) / 1.08
+    if (this.price) {
+      return +this.price
+    }
+    else if (this.purchaseSurface) {
+      return this.getHashOf(PurchasePriceSqm)[this.department] * +this.purchaseSurface
+    }
+    else {
+      return (this.principal - this.computedGuarantyFees + +this.contribution) / 1.08
+    }
   }
   get computedPropertyCharges(): number {
-    return this.propertyCharges || this.getHashOf(PropertyCharges)[this.department] * this.computedPurchaseSurface || PropertyCharges["00"] * this.computedPurchaseSurface
+    return +this.propertyCharges || this.getHashOf(PropertyCharges)[this.department] * this.computedPurchaseSurface || PropertyCharges["00"] * this.computedPurchaseSurface
   }
   get computedPropertyTax(): number {
-    return this.propertyTax || this.getHashOf(RentPriceSqm)[this.department] * this.computedPurchaseSurface * 3 * this.computedPropertyTaxRate
+    return +this.propertyTax || this.getHashOf(RentPriceSqm)[this.department] * this.computedPurchaseSurface * 3 * this.computedPropertyTaxRate
   }
   get computedPropertyTaxRate(): number {
     return this.propertyTaxRate && (+this.propertyTaxRate / 100) || this.getHashOf(PropertyTaxes)[this.department] / 100
   }
   get computedPurchaseSurface(): number {
     if (this.purchaseSurface) {
-      return this.purchaseSurface
+      return +this.purchaseSurface
     }
-    else if (this.rent) {
-      return this.rent / this.getHashOf(RentPriceSqm)[this.department]
-    }
-    else { 
-      return +this.computedPrice / this.getHashOf(PurchasePriceSqm)[this.department]
+    else {
+      return (this.principal * 0.99 + +this.contribution) / (1.08 * this.getHashOf(PurchasePriceSqm)[this.department])
     }
   }
   get computedRent(): number {
-    return this.rent || this.getHashOf(RentPriceSqm)[this.department] * this.computedPurchaseSurface
+    return +this.rent || this.getHashOf(RentPriceSqm)[this.department] * this.computedPurchaseSurface
   }
   get computedRentGrowthRate(): number {
     return (this.rentGrowthRate && +this.rentGrowthRate / 100) || this.RENT_GROWTH_RATE / 100
@@ -335,7 +334,20 @@ export default class Home extends Vue {
     return this.costs.findIndex(this.purchaseIsFavorable) + 1
   }
   get principal(): number {
-    return (this.computedPayment * ( 1 - ( 1 + this.computedMortgageRate ) ** ( - this.computedMortgagoDuration) )) / this.computedMortgageRate
+    if (this.purchaseSurface || this.price) {
+      return (this.computedPrice * 1.08 - +this.contribution) / 0.99
+    }
+    else {
+      return (this.payment * ( 1 - ( 1 + this.computedMortgageRate ) ** ( - this.computedMortgagoDuration) )) / this.computedMortgageRate
+    }
+  }
+  get payment() {
+    if (this.purchaseSurface || this.price) {
+      return this.principal * this.computedMortgageRate / ( 1 - ( 1 + this.computedMortgageRate ) ** ( - this.computedMortgagoDuration) )
+    }
+    else {
+      return (+this.incomes * 0.33)
+    }
   }
   get purchaseCosts(): number {
     return this.getHashOf(this.costs)[this.equilibrium]['purchase']['initialCosts'] + this.getHashOf(this.costs)[this.equilibrium]['purchase']['recuringCosts']
@@ -373,7 +385,7 @@ export default class Home extends Vue {
     return contribution * ( (1 + returnRate) ** duration ) + investmentGain
   }
   public remainingPrincipal(duration: number): number {
-    return this.computedPayment * ( 1 - (1 + this.computedMortgageRate)**( duration * 12 - this.computedMortgagoDuration ) ) / this.computedMortgageRate;
+    return this.payment * ( 1 - (1 + this.computedMortgageRate)**( duration * 12 - this.computedMortgagoDuration ) ) / this.computedMortgageRate;
   }
   public getHashOfCosts(i: number): object {
     const duration = i + 1;
@@ -386,7 +398,7 @@ export default class Home extends Vue {
       purchase: {
         finalSavings: - (this.computedPrice * ((1 + this.computedHomePriceGrowthRate)**(duration - 1)) - this.remainingPrincipal(duration)),
         initialCosts: this.computedGuarantyFees + this.computedNotaryFees,
-        recuringCosts: ( (this.computedPayment + this.computedInsuranceRate * this.principal) * 12 + this.computedPropertyCharges + this.computedHousingTax + this.computedPropertyTax) * duration
+        recuringCosts: ( (this.payment + this.computedInsuranceRate * this.principal) * 12 + this.computedPropertyCharges + this.computedHousingTax + this.computedPropertyTax) * duration
       }
     }
   }
