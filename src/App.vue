@@ -2,10 +2,7 @@
   <div class="app">
     <div class="ui secondary menu">
       <div class="left menu">
-        <!-- Comment
         <img alt="Pretto logo" src="@/assets/logo-pretto.png" style="text-align: left"/>
-        -->
-        Simulateur Acheter ou Louer
       </div>
       <a class="item">
         <router-link to="/">Calculette</router-link>
@@ -13,7 +10,11 @@
       <a class="item">
         <router-link to="/about">Données</router-link>
       </a>
+      <a class="item">
+        <router-link to="/old">Avec estimations</router-link>
+      </a>
     </div>
+    <div class="ui divider"></div>
     <router-view />
   </div>
 </template>
@@ -51,7 +52,6 @@ img {
 
 .left.menu {
   font-size: 3rem;
-  padding-top: 20px;
 }
 
 </style>

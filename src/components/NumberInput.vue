@@ -1,9 +1,11 @@
 <template>
   <div style="margin: 10px; margin-right: 5px">
-    <label>{{ label ? (label + ' : ') : '' }}</label>
+    <div style="margin-bottom: 5px">
+      <label>{{ label }}</label>
+    </div>
     <div :class="computedRightLabel ? 'ui right labeled input' : 'ui input'" :style="inputStyle">
       <input v-model="value" :placeholder="inputPlaceholder"/>
-      <div v-if="computedRightLabel" class="ui basic label" style="width: 40px; text-align: center">{{computedRightLabel}}</div>
+      <div v-if="computedRightLabel" class="ui basic label" style="width: 30%; text-align: center">{{computedRightLabel}}</div>
     </div>
   </div>
 </template>
@@ -35,10 +37,10 @@ export default class HelloWorld extends Vue {
   }
   get inputStyle(): string {
     if (!this.computedRightLabel) {
-      return "width: 160px; margin-right: 20px; margin-left: 20px"
+      return "width: 100%"
     }
     else {
-      return "width: 120px; margin-right: 60px; margin-left: 20px"
+      return "width: 80%"
     }
   }
   get inputPlaceholder(): string {

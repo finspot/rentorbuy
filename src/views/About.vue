@@ -1,5 +1,5 @@
 <template>
-  <div class="about" :style="{ backgroundImage: `url(${backgroundUrl})` }">
+  <div class="about">
     <button class="ui button" @click="choose('housing_tax')">Taxe d'habitation</button>
     <button class="ui button" @click="choose('property_charge')">Charges de copropriété</button>
     <button class="ui button" @click="choose('property_tax')">Taxe foncière</button>
