@@ -4,128 +4,8 @@
       msg="Welcome to the Rent Or Buy calculator"
       style="padding: 30px"
     /> -->
-    <div class="ui three columns centered grid">
-      <div class="ui side column">
-        <li class="ui card">
-          <h3>Données</h3>
-          <div class="ui divider"></div>
-          <number-input
-            :value="zipcode"
-            label="Code postal"
-            @input="changeZipcode($event)"
-            rightLabel="null"
-          />
-          <number-input
-            :value="price"
-            label="Prix du bien visé"
-            @input="price = $event"
-            :placeholder="computedPrice"
-          />
-          <number-input
-            :value="rent"
-            label="Loyer visé"
-            @input="rent = $event"
-            :placeholder="computedRent"
-          />
-          <number-input
-            :value="purchaseSurface"
-            label="Surface visée"
-            @input="purchaseSurface = $event"
-            :placeholder="computedPurchaseSurface"
-            rightLabel="m2"
-          />
-          <number-input
-            :value="contribution"
-            label="Apport possible"
-            @input="contribution = $event"
-          />
-          <div class="advanced" style="cursor: pointer" @click="showAdvanced = !showAdvanced">
-            Paramètres avancés
-            <i :class="showAdvanced ? 'angle down icon' : 'angle right icon'" style="color: #42b983"></i>
-          </div>
-          <number-input
-            v-if="showAdvanced"
-            :value="mortgageDuration"
-            label="Durée du prêt"
-            @input="mortgageDuration = $event"
-            :placeholder="computedMortgagoDuration / 12"
-            rightLabel="ans"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="payment"
-            label="Mensualité"
-            @input="payment = $event"
-            :placeholder="computedPayment"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="insuranceRate"
-            label="Taux de l'assurance"
-            @input="insuranceRate = $event"
-            :placeholder="computedInsuranceRate * 1200"
-            rightLabel="%"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="notaryFees"
-            label="Frais de notaire"
-            @input="notaryFees = $event"
-            :placeholder="computedNotaryFees"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="guarantyFees"
-            label="Frais de garantie"
-            @input="guarantyFees = $event"
-            :placeholder="computedGuarantyFees"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="propertyCharges"
-            label="Charges de propriété"
-            @input="propertyCharges = $event"
-            :placeholder="computedPropertyCharges"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="maintenance"
-            label="Maintenance / Rénovation"
-            @input="maintenance = $event"
-            :placeholder="computedMaintenance"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="housingTax"
-            label="Taxe d'habitation"
-            @input="housingTax = $event"
-            :placeholder="computedHousingTax"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="propertyTax"
-            label="Taxe foncière"
-            @input="propertyTax = $event"
-            :placeholder="computedPropertyTax"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="agencyFees"
-            label="Frais d'agence"
-            @input="agencyFees = $event"
-            :placeholder="computedAgencyFees"
-          />
-        </li>
-      </div>
-      <div class="ui six wide column">
-        <chart :purchaseCosts="purchaseCostsArray" :rentalCosts="rentalCostsArray" :labels="labels" />
-        <div class="ui centered card" style="margin-bottom: 30px">
-          <div style="margin: 10px">
-            <h4>Il vaut mieux acheter à partir de : <strong>{{ formatNumber(equilibrium) }} ans</strong></h4>
-          </div>
-        </div>
-      </div>
-      <div class="ui side column">
+    <div class="ui three columns grid">
+      <div class="ui three wide column">
         <li class="ui card">
           <h3>Paramètres</h3>
           <div class="ui divider"></div>
@@ -154,14 +34,6 @@
             @input="savingsReturnRate = $event / 10"
           />
           <slider-input
-            :value="computedInflationRate * 1000"
-            label="Inflation"
-            :min="0"
-            :max="50"
-            rightLabel="%"
-            @input="inflationRate = $event / 10"
-          />
-          <slider-input
             :value="computedPropertyTaxRate * 1000"
             label="Taux de taxe foncière"
             :min="0"
@@ -169,17 +41,172 @@
             rightLabel="%"
             @input="propertyTaxRate = $event / 10"
           />
-          <slider-input
-            :value="computedMortgageRate * 12000"
-            label="Taux du prêt"
-            :min="0"
-            :max="50"
-            rightLabel="%"
-            @input="mortgageRate = $event / 10"
-          />
         </li>
       </div>
+      <div class="ui seven wide column">
+        <div class="ui centered card">
+          <h3>Informations générales</h3>
+          <div class="ui divider"></div>
+          <div class="ui two column centered grid">
+            <div class="column" style="padding: 0; text-align: right">
+              <number-input
+                :value="zipcode"
+                label="Code postal"
+                @input="changeZipcode($event)"
+                rightLabel="null"
+              />
+              <number-input
+                :value="contribution"
+                label="Apport"
+                @input="contribution = $event"
+              />
+            </div>
+            <div class="column" style="padding: 0; text-align: right">
+              <number-input
+                :value="incomes"
+                label="Revenus mensuels nets"
+                @input="incomes = $event"
+              />
+              <number-input
+                :value="purchaseSurface"
+                label="Surface d'achat"
+                @input="purchaseSurface = $event"
+                :placeholder="computedPurchaseSurface"
+                rightLabel="m2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="ui two column centered grid" style="margin: 0">
+          <div class="column" style="padding-left: 0">
+            <li class="ui card">
+              <h3>Achat</h3>
+              <div class="ui divider"></div>
+              <number-input
+                :value="price"
+                label="Prix du bien"
+                @input="price = $event"
+                :placeholder="computedPrice"
+              />
+              <number-input
+                :value="mortgageRate"
+                label="Taux du prêt"
+                @input="mortgageRate = $event"
+                :placeholder="computedMortgageRate * 1200"
+                rightLabel="%"
+              />
+              <number-input
+                :value="mortgageDuration"
+                label="Durée du prêt"
+                @input="mortgageDuration = $event"
+                :placeholder="computedMortgagoDuration / 12"
+                rightLabel="ans"
+              />
+              <number-input
+                :value="insuranceRate"
+                label="Taux de l'assurance"
+                @input="insuranceRate = $event"
+                :placeholder="computedInsuranceRate * 1200"
+                rightLabel="%"
+              />
+              <number-input
+                :value="notaryFees"
+                label="Frais de notaire"
+                @input="notaryFees = $event"
+                :placeholder="computedNotaryFees"
+              />
+              <number-input
+                :value="guarantyFees"
+                label="Frais de garantie"
+                @input="guarantyFees = $event"
+                :placeholder="computedGuarantyFees"
+              />
+              <number-input
+                :value="propertyCharges"
+                label="Charges de propriété"
+                @input="propertyCharges = $event"
+                :placeholder="computedPropertyCharges"
+              />
+              <number-input
+                :value="housingTax"
+                label="Taxe d'habitation"
+                @input="housingTax = $event"
+                :placeholder="computedHousingTax"
+              />
+              <number-input
+                :value="propertyTax"
+                label="Taxe foncière"
+                @input="propertyTax = $event"
+                :placeholder="computedPropertyTax"
+              />
+            </li>
+          </div>
+          <div class="column" style="padding-right: 0">
+            <li class="ui card">
+              <h3>Location</h3>
+              <div class="ui divider"></div>
+              <number-input
+                :value="rent"
+                label="Loyer"
+                @input="rent = $event"
+                :placeholder="computedRent"
+              />
+              <number-input
+                :value="agencyFees"
+                label="Frais d'agence"
+                @input="agencyFees = $event"
+                :placeholder="computedAgencyFees"
+              />
+              <number-input
+                :value="housingTax"
+                label="Taxe d'habitation"
+                @input="housingTax = $event"
+                :placeholder="computedHousingTax"
+              />
+              <number-input
+                :value="monthlySavings"
+                label="Epargne mensuelle"
+                @input="monthlySavings = $event"
+                :placeholder="computedMonthlySavings"
+              />
+            </li>
+          </div>
+        </div>
+      </div>
+      <div class="ui six wide column">
+        <div class="ui centered card" style="margin-bottom: 30px">
+          <div style="margin-top: 10px">
+            <h2>Il vaut mieut acheter à partir de :</h2>
+            <div class="ui card result">{{ formatNumber(equilibrium) }} ans</div>
+          </div>
+        </div>
+        <div class="ui centered card" style="margin-bottom: 30px">
+          <h3>Détails du résultat</h3>
+          <div class="ui divider"></div>
+          <div class="ui two column grid">
+            <div class="left column">
+              <h4>Capital : </h4>
+              <h4>Mensualité : </h4>
+              <h4>Epargne de location : </h4>
+              <h4>Epargne d'achat : </h4>
+              <h4>CRD : </h4>
+              <h4>Coûts de location : </h4>
+              <h4>Coûts d'achat : </h4>
+            </div>
+            <div class="ui right column">
+              <h4>{{ formatNumber(principal) }} €</h4>
+              <h4>{{ formatNumber(payment) }} €</h4>
+              <h4>{{ formatNumber(rentFinalSavings(equilibrium)) }} €</h4>
+              <h4>{{ formatNumber(- getHashOfCosts(equilibrium - 1)['purchase']['finalSavings']) }} €</h4>
+              <h4>{{ formatNumber(remainingPrincipal(equilibrium)) }} €</h4>
+              <h4>{{ formatNumber(rentalCosts) }} €</h4>
+              <h4>{{ formatNumber(purchaseCosts) }} €</h4>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <chart :purchaseCosts="purchaseCostsArray" :rentalCosts="rentalCostsArray" :labels="labels" />
   </div>
 </template>
 
@@ -206,7 +233,6 @@ import RentPriceSqm from "@/config/rent_price_sqm.json";
 export default class Home extends Vue {
 
   private HOME_PRICE_GROWTH_RATE = 3;
-  private INFLATION_RATE = 2;
   private INSURANCE_RATE = 0.2;
   private MORTGAGE_DURATION = 25;
   private MORTGAGE_RATE = 1.5;
@@ -217,14 +243,12 @@ export default class Home extends Vue {
   private guarantyFees: any = null;
   private homePriceGrowthRate: any = null;
   private housingTax: any = null;
-  private inflationRate: any = null;
+  private incomes: any = null;
   private insuranceRate: any = null;
-  private maintenance: any = null;
   private monthlySavings: any = null;
   private mortgageDuration: any = null;
   private mortgageRate: any = null;
   private notaryFees: any = null;
-  private payment: any = null;
   private purchaseSurface: any = null;
   private price: any = null;
   private propertyCharges: any = null;
@@ -234,8 +258,9 @@ export default class Home extends Vue {
   private rentGrowthRate: any = null;
   private savingsReturnRate: any = null;
   private zipcode: any = null;
+  private showing: any = 'general';
+  private slidevalue: any = null;
   private backgroundUrl = require("@/assets/background-image.png");
-  private showAdvanced = false;
 
   get computedAgencyFees(): number {
     return +this.agencyFees || this.computedRent
@@ -252,28 +277,17 @@ export default class Home extends Vue {
   get computedInsuranceRate(): number {
     return (this.insuranceRate && (+this.insuranceRate / 1200)) || this.INSURANCE_RATE / 1200
   }
-  get computedInflationRate(): number {
-    return (this.inflationRate && +this.inflationRate / 100) || this.INFLATION_RATE / 100
-  }
-  get computedMaintenance(): number {
-    return +this.maintenance || 0.01 * this.computedPrice
+  get computedMonthlySavings(): number {
+    return +this.monthlySavings || this.payment - this.computedRent
   }
   get computedMortgagoDuration(): number {
     return (this.mortgageDuration && (+this.mortgageDuration * 12)) || this.MORTGAGE_DURATION * 12
   }
   get computedMortgageRate(): number {
-    return (this.mortgageRate && +this.mortgageRate / 1200) || this.MORTGAGE_RATE / 1200
+    return (this.mortgageRate && (+this.mortgageRate / 1200)) || this.MORTGAGE_RATE / 1200
   }
   get computedNotaryFees(): number {
     return +this.notaryFees || 0.08 * this.computedPrice
-  }
-  get computedPayment() {
-    if (this.payment) {
-      return +this.payment
-    }
-    else {
-      return this.principal * this.computedMortgageRate / ( 1 - ( 1 + this.computedMortgageRate ) ** ( - this.computedMortgagoDuration) )
-    }
   }
   get computedPrice(): number {
     if (this.price) {
@@ -300,7 +314,7 @@ export default class Home extends Vue {
       return +this.purchaseSurface
     }
     else {
-      return this.computedPrice / this.getHashOf(PurchasePriceSqm)[this.department]
+      return (this.principal * 0.99 + +this.contribution) / (1.08 * this.getHashOf(PurchasePriceSqm)[this.department])
     }
   }
   get computedRent(): number {
@@ -320,7 +334,7 @@ export default class Home extends Vue {
     return zip.slice(0, 2) == "97" ? zip.slice(0, 3) : zip.slice(0, 2)
   }
   get equilibrium(): number {
-    return this.costs.findIndex(this.purchaseIsFavorable)
+    return this.costs.findIndex(this.purchaseIsFavorable) + 1
   }
   get labels(): Array<number> {
     return [...Array(25).keys()]
@@ -329,15 +343,26 @@ export default class Home extends Vue {
     if (this.purchaseSurface || this.price) {
       return (this.computedPrice * 1.08 - +this.contribution) / 0.99
     }
-    else if (this.payment) {
+    else {
       return (this.payment * ( 1 - ( 1 + this.computedMortgageRate ) ** ( - this.computedMortgagoDuration) )) / this.computedMortgageRate
     }
-    else {
-      return 0
+  }
+  get payment() {
+    if (this.purchaseSurface || this.price) {
+      return this.principal * this.computedMortgageRate / ( 1 - ( 1 + this.computedMortgageRate ) ** ( - this.computedMortgagoDuration) )
     }
+    else {
+      return (+this.incomes * 0.33)
+    }
+  }
+  get purchaseCosts(): number {
+    return this.getHashOf(this.costs)[this.equilibrium]['purchase']['initialCosts'] + this.getHashOf(this.costs)[this.equilibrium]['purchase']['recuringCosts']
   }
   get purchaseCostsArray(): Array<number> {
     return [...Array(25).keys()].map(i => this.getHashOf(this.getHashOfCosts(i))['purchase']['initialCosts'] + this.getHashOf(this.getHashOfCosts(i))['purchase']['recuringCosts'] + this.getHashOf(this.getHashOfCosts(i))['purchase']['finalSavings'])
+  }
+  get rentalCosts(): number {
+    return this.getHashOf(this.costs)[this.equilibrium]['rent']['initialCosts'] + this.getHashOf(this.costs)[this.equilibrium]['rent']['recuringCosts']
   }
   get rentalCostsArray(): Array<number> {
     return [...Array(25).keys()].map(i => this.getHashOf(this.getHashOfCosts(i))['rent']['initialCosts'] + this.getHashOf(this.getHashOfCosts(i))['rent']['recuringCosts'] + this.getHashOf(this.getHashOfCosts(i))['rent']['finalSavings'])
@@ -363,50 +388,29 @@ export default class Home extends Vue {
     }
     return stringResult
   }
-  public yearlySavings(duration: number): number {
-    return this.purchaseRecuringCosts(duration) - this.rentRecuringCosts(duration)
-  }
   public rentFinalSavings(duration: number): number {
     const returnRate = this.computedSavingsReturnRate;
     const contribution = this.contribution;
-    const yearlySavings = this.yearlySavings(duration);
-    const investmentGain = yearlySavings * ( ( (1 + returnRate) * ( (1 + returnRate) ** duration - 1 ) / returnRate ) - duration );
+    const yearlySavings = this.computedMonthlySavings * 12;
+    const investmentGain = yearlySavings * returnRate * ( (1 + returnRate) ** duration - 1 ) /
+      returnRate;
     return contribution * ( (1 + returnRate) ** duration ) + investmentGain
   }
-  public rentRecuringCosts(duration: number): number {
-    if (duration == 0) { return 0 }
-    else {
-      return (12 * this.computedRent * ((1 + this.computedRentGrowthRate)**(duration - 1)) + this.computedHousingTax * (1 + this.computedInflationRate)**(duration - 1))
-    }
-  }
-  public addRecuringCosts(recuringCosts: any, duration: number): number {
-    let sum = 0
-    for (let i=1; i<duration+1; i++) {
-      sum += recuringCosts(i)
-    }
-    return sum
-  }
-  public purchaseRecuringCosts(duration: number): number {
-    if (duration == 0) { return 0 }
-    else {
-      return ( (this.computedPayment + this.computedInsuranceRate * this.principal) * 12 + (this.computedPropertyCharges + this.computedHousingTax + this.computedPropertyTax + this.computedMaintenance) * (1 + this.computedInflationRate)**(duration - 1))
-    }
-  }
   public remainingPrincipal(duration: number): number {
-    return this.computedPayment * ( 1 - (1 + this.computedMortgageRate)**( duration * 12 - this.computedMortgagoDuration ) ) / this.computedMortgageRate;
+    return this.payment * ( 1 - (1 + this.computedMortgageRate)**( duration * 12 - this.computedMortgagoDuration ) ) / this.computedMortgageRate;
   }
   public getHashOfCosts(i: number): object {
-    const duration = i;
+    const duration = i + 1;
     return {
       rent: {
         finalSavings: - this.rentFinalSavings(duration),
         initialCosts: this.computedAgencyFees,
-        recuringCosts: this.addRecuringCosts(this.rentRecuringCosts, duration)
+        recuringCosts: (12 * this.computedRent * ((1 + this.computedRentGrowthRate)**(duration - 1)) + this.computedHousingTax) * duration
       },
       purchase: {
         finalSavings: - (this.computedPrice * ((1 + this.computedHomePriceGrowthRate)**(duration - 1)) - this.remainingPrincipal(duration)),
         initialCosts: this.computedGuarantyFees + this.computedNotaryFees,
-        recuringCosts: this.addRecuringCosts(this.purchaseRecuringCosts, duration)
+        recuringCosts: ( (this.payment + this.computedInsuranceRate * this.principal) * 12 + this.computedPropertyCharges + this.computedHousingTax + this.computedPropertyTax) * duration
       }
     }
   }
@@ -424,13 +428,13 @@ ul {
 }
 li {
   display: inline-block;
-  text-align: left;
+  text-align: right;
 }
 li.ui.card {
   width: 800px;
   padding: 5px;
   padding-top: 10px;
-  box-shadow: 2px 2px 10px #cacaca;
+  box-shadow: 2px 2px 10px #505050;
   font-size: 1rem;
 }
 h3 {
@@ -442,7 +446,7 @@ div.ui.card {
   width: 900px;
   padding: 5px;
   padding-top: 10px;
-  box-shadow: 2px 2px 10px #cacaca;
+  box-shadow: 2px 2px 10px #505050;
   font-size: 1rem;
 }
 div.ui.two.column.centered.grid {
@@ -471,17 +475,21 @@ h5 {
   margin-top: 8px;
   margin-bottom: 7px;
 }
-h4 {
-  text-align: center;
+.ui.card.result {
+  width: 120px;
+  height: 3rem;
+  margin-left: 250px;
+  font-size: 2rem;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0.1px 0.1px 5px #bebebe;
+}
+.left.column {
   font-size: 1.5rem;
-  font-weight: normal;
+  text-align: right;
 }
-.ui.grid>.ui.side.column {
-  width: 16%;
-  padding-top: 50px;
-}
-.advanced {
-  text-align: center;
-  color: #42b983;
+.right.column {
+  font-size: 1.5rem;
+  text-align: left;
 }
 </style>
