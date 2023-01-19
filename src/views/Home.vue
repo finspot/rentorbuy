@@ -2,7 +2,7 @@
   <div class="home">
     <div class="landing">
       <h1 style="font-size: 5rem">Acheter ou louer en 2023 ?</h1>
-      <h2>Découvrez si vous êtes plutôt une cigale ou une fourmi</h2>
+      <h2>Choisissez votre camp entre la cigale ou la fourmi</h2>
       <div class="row-inputs">
         <number-input
           :value="price"
