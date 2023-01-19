@@ -1,8 +1,8 @@
-const rho = (rate, duration) => {
+const rho = (rate: any, duration: any) => {
   return rate / (1 - Math.pow(1 + rate, -duration));
 };
 
-const computePayment = ({ duration, rate, principal }) => {
+const computePayment = ({ duration, rate, principal }: any) => {
   return principal * rho(rate, duration);
 };
 
@@ -18,7 +18,7 @@ const INVEST_RATE = 0.03;
 const RENT_EVOL_RATE = 0.02;
 const NOTARY_FEES_RATE = 0.08;
 
-const nplusone = obj => {
+const nplusone = (obj: any) => {
   const payment = obj.buy.payment;
   const interests = (INTEREST_RATE / 12) * obj.buy.principal;
   const buyCosts = (obj.buy.capital * BUY_COST_RATE) / 12;
@@ -44,9 +44,9 @@ const nplusone = obj => {
   };
 };
 
-export const finalArray = (duration, goodPrice, contribution, rent) => {
+export const finalArray = (duration: any, goodPrice: any, contribution: any, rent: any): any => {
   const principal = goodPrice * (1 + NOTARY_FEES_RATE) - contribution;
-  const payment = computePayment(duration, INTEREST_RATE, principal);
+  const payment = computePayment({ duration, INTEREST_RATE, principal });
   const interests = (INTEREST_RATE / 12) * principal;
   const buyCosts = (principal * BUY_COST_RATE) / 12;
   const res = [
