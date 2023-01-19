@@ -457,7 +457,7 @@ div.ui.two.column.centered.grid {
   margin: 10px;
 }
 a {
-  color: #42b983;
+  color: #0A806B;
 }
 .home {
   padding-bottom: 30px;

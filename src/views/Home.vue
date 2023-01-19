@@ -71,7 +71,7 @@
           />
           <div class="advanced" style="cursor: pointer" @click="showAdvanced = !showAdvanced">
             Paramètres avancés
-            <i :class="showAdvanced ? 'angle down icon' : 'angle right icon'" style="color: #42b983"></i>
+            <i :class="showAdvanced ? 'angle down icon' : 'angle right icon'" style="color: #0A806B"></i>
           </div>
           <number-input
             v-if="showAdvanced"
@@ -166,6 +166,7 @@
             rightLabel="%"
             v-
             label="Croissance du prix du bien"
+            id="homePriceGrowthRate"
             @input="homePriceGrowthRate = $event / 10"
           />
           <slider-input
@@ -174,6 +175,7 @@
             :max="50"
             rightLabel="%"
             label="Croissance de la location"
+            id="rentGrowthRate"
             @input="rentGrowthRate = $event / 10"
           />
           <slider-input
@@ -182,6 +184,7 @@
             :min="0"
             :max="50"
             rightLabel="%"
+            id="savingsReturnRate"
             @input="savingsReturnRate = $event / 10"
           />
           <slider-input
@@ -190,6 +193,7 @@
             :min="0"
             :max="50"
             rightLabel="%"
+            id="inflationRate"
             @input="inflationRate = $event / 10"
           />
           <slider-input
@@ -198,6 +202,7 @@
             :min="0"
             :max="500"
             rightLabel="%"
+            id="propertyTaxRate"
             @input="propertyTaxRate = $event / 10"
           />
           <slider-input
@@ -206,6 +211,7 @@
             :min="0"
             :max="50"
             rightLabel="%"
+            id="mortgageRate"
             @input="mortgageRate = $event / 10"
           />
         </li>
@@ -538,7 +544,7 @@ div.ui.two.column.centered.grid {
   margin: 10px;
 }
 a {
-  color: #42b983;
+  color: #0A806B;
 }
 .home {
   padding-bottom: 30px;
@@ -567,6 +573,6 @@ h4 {
 }
 .advanced {
   text-align: center;
-  color: #42b983;
+  color: #0A806B;
 }
 </style>

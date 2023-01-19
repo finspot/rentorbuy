@@ -1,10 +1,11 @@
 <template>
   <div style="margin: 10px">
-    <h6>{{label}}</h6>
+    <h6>{{label}}<img class="info" src="@/assets/info-bubble.png" v-on:click="openInfo(id)"/>
+    </h6>
     <h5>{{displayedValue.toFixed(2)}} {{rightLabel}}</h5>
     <vue-slide-bar
       v-model="value"
-      :processStyle="{ backgroundColor: '#42b983' }"
+      :processStyle="{ backgroundColor: '#0A806B' }"
       :lineHeight="5"
       :min="min"
       :max="max"
@@ -32,9 +33,14 @@ export default class HelloWorld extends Vue {
   @Prop() private max!: number
   @Prop() private min!: number
   @Prop() private rightLabel!: string
+  @Prop() private id!: string
   @Watch('value')
   valueChanged() {
     this.$emit('input', this.value)
+  }
+
+  openInfo(id: string) {
+    console.log(id)
   }
 
   get displayedValue(): number {
@@ -48,3 +54,18 @@ export default class HelloWorld extends Vue {
 }
 
 </script>
+
+<style>
+  .info {
+    display: inline;
+    height: 24px;
+    width: 24px;
+    margin: 0;
+    margin-left: 4px;
+    vertical-align: bottom;
+  }
+
+  .info:hover {
+    cursor: pointer;
+  }
+</style>
