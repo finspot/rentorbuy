@@ -604,7 +604,9 @@ td {
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-bottom: 24px;
 }
+
 .choose button {
   width: 300px;
   padding: 24px;
