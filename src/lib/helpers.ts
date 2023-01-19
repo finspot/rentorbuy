@@ -15,11 +15,11 @@ const INVEST_RATE = 0.03;
 const RENT_EVOL_RATE = 0.02;
 const NOTARY_FEES_RATE = 0.08;
 
-const nplusone = (obj: any, interestRate: number, insuranceRate: number, growthRate: number) => {
+const nplusone = (obj: any, interestRate: number, insuranceRate: number, growthRate: number, rentEvolRate: number) => {
   const payment = obj.buy.payment;
   const interests = (interestRate) * obj.buy.principal;
   const buyCosts = (obj.buy.goodPrice * BUY_COST_RATE) / 12 + obj.buy.insurance;
-  const rent = obj.rent.rent * (1 + RENT_EVOL_RATE / 12);
+  const rent = obj.rent.rent * (1 + rentEvolRate / 12);
   const sautDeCharge = Math.max(0, payment + buyCosts - obj.rent.rent);
   return {
     buy: {
@@ -42,7 +42,7 @@ const nplusone = (obj: any, interestRate: number, insuranceRate: number, growthR
   };
 };
 
-export const finalArray = (duration: any, goodPrice: any, contribution: any, rent: any, interestRate: number, insuranceRate: number, growthRate: number): any => {
+export const finalArray = (duration: any, goodPrice: any, contribution: any, rent: any, interestRate: number, insuranceRate: number, growthRate: number, rentEvolRate: number): any => {
   const principal = goodPrice * (1 + NOTARY_FEES_RATE) - contribution;
   const payment = computePayment({ duration: duration, rate: interestRate, principal });
   const interests = (interestRate) * principal;
@@ -68,7 +68,7 @@ export const finalArray = (duration: any, goodPrice: any, contribution: any, ren
     }
   ];
   for (let i = 0; i < duration; i++) {
-    res.push(nplusone(res[i], interestRate, insuranceRate, growthRate));
+    res.push(nplusone(res[i], interestRate, insuranceRate, growthRate, rentEvolRate));
   }
   return res;
 };

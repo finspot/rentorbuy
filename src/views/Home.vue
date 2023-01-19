@@ -272,7 +272,7 @@ export default class Home extends Vue {
   private INSURANCE_RATE = 0.2;
   private MORTGAGE_DURATION = 25;
   private MORTGAGE_RATE = 3.5;
-  private RENT_GROWTH_RATE = 1;
+  private RENT_GROWTH_RATE = 2;
   private SAVINGS_RETURN_RATE = 1;
   private agencyFees: any = null;
   private contribution: any = null;
@@ -394,7 +394,7 @@ export default class Home extends Vue {
     }
   }
   get computedFinalArray(): Array<any> {
-    return finalArray(this.computedMortgagoDuration, this.price, this.contribution, this.computedRent, this.computedMortgageRate, this.computedInsuranceRate, this.computedHomePriceGrowthRate)
+    return finalArray(this.computedMortgagoDuration, this.price, this.contribution, this.computedRent, this.computedMortgageRate, this.computedInsuranceRate, this.computedHomePriceGrowthRate, this.computedRentGrowthRate)
   }
   get purchaseCapitalArray(): Array<number> {
     return [...Array(26).keys()].map(i => this.computedFinalArray[i*12].buy.capital)
