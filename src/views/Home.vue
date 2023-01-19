@@ -217,6 +217,32 @@
 
       </div>
     </div>
+    <div class="article">
+      <p>
+        Acheter ou louer en 2023 ? Vous vous êtes probablement déjà posés cette question, et vous avez bien raison ! Pour chacune de ces options, Pretto vous présente les avantages et les inconvénients pour vous aider à vous décider.
+      </p>
+      <h3>En quoi l'achat est-il intéressant ?</h3>
+      <p>
+        Le principal avantage est de devenir propriétaire de son logement. Vous pourrez modifier votre bien librement sans devoir demander d'autorisation. Les mensualités que vous rembourserez pour cette acquisition vous permettront d'acquérir du patrimoine. De plus, cet actif peut prendre de la valeur au fil des années. Ainsi, vous pourrez réaliser une plus-value lors de la revente du bien.
+        <br/>
+      </p>
+      <p>Cependant, l'achat implique aussi des coûts importants :</p>
+      <p>
+        - le coût du crédit, lié à la souscription d'un prêt<br/>
+        - les frais de notaire<br/>
+        - les frais de garantie<br/>
+        - des éventuels coûts de rénovation, pour remettre le logement à son goût<br/>
+      </p>
+      <p>Il est donc très important de bien évaluer sa capacité financière avant de se lancer ou non dans l'achat d'un bien immobilier.</p>
+      <h3>Faut-il plutôt louer dans ce cas ?</h3>
+      <p>
+        La location permet d'éviter d'engager des sommes importantes en une fois. Généralement, un loyer est moins élevé qu'une mensualité de prêt immobilier. De plus, en cas de problème ou de dégât dans le logement, c'est généralement le propriétaire qui est responsable de les réparer.
+        <br/>
+        Cependant, en tant que locataire, vous n'êtes pas propriétaire. Vous ne pouvez donc pas effectuer des modifications ou des rénovations sans l'autorisation du bailleur. Vous n'investissez pas non plus sur votre patrimoine personnel puisque vous enrichissez votre bailleur, à qui vous fournissez un rendement.
+        <br/>
+        En conclusion, acheter ou louer un bien immobilier dépend de votre situation personnelle et financière. Si vous avez les moyens financiers et que vous souhaitez devenir propriétaire, l'achat peut être une option intéressante. Sinon, la location peut être plus adaptée. Pour faire un bilan personnalisé sur votre situation,  consultez des professionnels de l'immobilier pour vous aider à évaluer votre capacité financière.
+      </p>
+    </div>
   </div>
 </template>
 
@@ -586,6 +612,19 @@ content: '';
 .img-result {
   width: 300px;
   height: auto;
+}
+
+.article {
+  padding: 24px;
+  margin: 100px;
+  border: 1px solid grey;
+  border-radius: 8px;
+  text-align: left;
+  font-size: 1.2rem;
+}
+
+.article h3 {
+  margin-bottom: 16px;
 }
 
 ul {
