@@ -16,16 +16,15 @@
           @input="contribution = $event"
         />
         <number-input
-            :value="rent"
-            label="Loyer visé"
-            @input="rent = $event"
-            :placeholder="computedRent"
-          />
+          :value="rent"
+          label="Loyer visé"
+          @input="rent = $event"
+          :placeholder="computedRent"
+        />
       </div>
       <button class="submit" v-on:click="handleScroll">Voir le résultat</button>
       <div class="images">
         <img src="@/assets/cicada.png" />
-        <img src="@/assets/house.png" />
         <img src="@/assets/ant.png" />
       </div>
     </div>
@@ -60,16 +59,15 @@
           <h3>Données</h3>
           <div class="ui divider"></div>
           <number-input
-            :value="zipcode"
-            label="Code postal"
-            @input="changeZipcode($event)"
-            rightLabel="null"
-          />
-          <number-input
             :value="price"
             label="Prix du bien visé"
             @input="price = $event"
             :placeholder="computedPrice"
+          />
+          <number-input
+            :value="contribution"
+            label="Apport possible"
+            @input="contribution = $event"
           />
           <number-input
             :value="rent"
@@ -78,23 +76,6 @@
             :placeholder="computedRent"
           />
           <number-input
-            :value="purchaseSurface"
-            label="Surface visée"
-            @input="purchaseSurface = $event"
-            :placeholder="computedPurchaseSurface"
-            rightLabel="m2"
-          />
-          <number-input
-            :value="contribution"
-            label="Apport possible"
-            @input="contribution = $event"
-          />
-          <div class="advanced" style="cursor: pointer" @click="showAdvanced = !showAdvanced">
-            Paramètres avancés
-            <i :class="showAdvanced ? 'angle down icon' : 'angle right icon'" style="color: #0A806B"></i>
-          </div>
-          <number-input
-            v-if="showAdvanced"
             :value="mortgageDuration"
             label="Durée du prêt"
             @input="mortgageDuration = $event"
@@ -102,68 +83,20 @@
             rightLabel="ans"
           />
           <number-input
-            v-if="showAdvanced"
-            :value="payment"
-            label="Mensualité"
-            @input="payment = $event"
-            :placeholder="computedPayment"
-          />
-          <number-input
-            v-if="showAdvanced"
             :value="insuranceRate"
             label="Taux de l'assurance"
             @input="insuranceRate = $event"
             :placeholder="computedInsuranceRate * 1200"
             rightLabel="%"
           />
-          <number-input
-            v-if="showAdvanced"
-            :value="notaryFees"
-            label="Frais de notaire"
-            @input="notaryFees = $event"
-            :placeholder="computedNotaryFees"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="guarantyFees"
-            label="Frais de garantie"
-            @input="guarantyFees = $event"
-            :placeholder="computedGuarantyFees"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="propertyCharges"
-            label="Charges de propriété"
-            @input="propertyCharges = $event"
-            :placeholder="computedPropertyCharges"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="maintenance"
-            label="Maintenance / Rénovation"
-            @input="maintenance = $event"
-            :placeholder="computedMaintenance"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="housingTax"
-            label="Taxe d'habitation"
-            @input="housingTax = $event"
-            :placeholder="computedHousingTax"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="propertyTax"
-            label="Taxe foncière"
-            @input="propertyTax = $event"
-            :placeholder="computedPropertyTax"
-          />
-          <number-input
-            v-if="showAdvanced"
-            :value="agencyFees"
-            label="Frais d'agence"
-            @input="agencyFees = $event"
-            :placeholder="computedAgencyFees"
+          <slider-input
+            :value="computedMortgageRate * 12000"
+            label="Taux du prêt"
+            :min="0"
+            :max="50"
+            rightLabel="%"
+            id="mortgageRate"
+            @input="mortgageRate = $event / 10"
           />
         </li>
       </div>
@@ -225,46 +158,35 @@
             id="propertyTaxRate"
             @input="propertyTaxRate = $event / 10"
           />
-          <slider-input
-            :value="computedMortgageRate * 12000"
-            label="Taux du prêt"
-            :min="0"
-            :max="100"
-            rightLabel="%"
-            id="mortgageRate"
-            @input="mortgageRate = $event / 10"
-          />
         </li>
       </div>
     </div>
     <div class="ui three columns centered grid">
+      <h1>Vous vous sentez plutôt :</h1>
       <div class="choose">
         <button v-on:click="toggleChoice('ant')" :style="{ backgroundColor: choice === 'ant' ? '#0A806B' : 'white' }">FOURMI</button>
         <button v-on:click="toggleChoice('cicada')" :style="{ backgroundColor: choice !== 'ant' ? 'rgb(252, 92, 99)' : 'white' }">CIGALE</button>
       </div>
       <div class="ant" :style="{ display: choice === 'ant' ? 'block' : 'none' }">
-        <h2>Il est grand temps que la fourmi prépare les beaux jours</h2>
-        <p>Vous qui travaillez dur et épargnez pour être à l’abri de besoins, achetez votre résidence principale.</p>
-        <div class="good-news">
-          <h3>
-  
-            Bonne nouvelle !
-          </h3>
-          <p>Pretto peut vous accompagner pour concrétiser votre objectif. Grâce à notre simulateur, découvrez votre capacité d’emprunt</p>
-          <button class="contact">Contacter un expert Pretto</button>
-        </div>
-        <h2>A propos de notre simulateur Acheter ou louer ?</h2>
+        <img src="@/assets/antResult.png" class="img-result" />
         <p>
-          Acheter ou louer est une question que tous les ménages se posent un jour ou l’autre. Il n'y a ni bonne réponse, ni réponse unique car cela dépend de plusieurs facteurs comme les revenus, les besoins en matière de logement, les projets à long terme, les prix de l'immobilier et les taux d'intérêts.  Acheter peut être avantageux car cela permet de devenir propriétaire de son propre logement et de commencer à se constituer un patrimoine. Cependant, cela peut aussi être plus coûteux à long terme, compte tenu des coûts d'entretien, des impôts ou tout autre frais.  Louer est souvent plus abordable à court terme, mais ne permet pas de capitaliser à long terme. Il est donc important de bien réfléchir à ses besoins et à ses moyens avant de prendre une décision.
+          Vous avez pris l’habitude de surveiller vos dépenses et n’avez pas peur de travailler dur ? Vous êtes habitués à vous serrer la ceinture, à épargner chaque centime. Aucun doute, <strong>vous êtes une fourmi.</strong>
         </p>
-        <h2>
-          Comment fonctionne notre simulateur Acheter ou louer ?
-        </h2>
+        <p>
+          Le choix est évident  pour vous : pour éviter de jeter de l’argent par les fenêtres, achetez !
+        </p>
+        <button class="contact">Contacter un expert Pretto</button>
       </div>
       <div class="cicada" :style="{ display: choice !== 'ant' ? 'block' : 'none' }">
-        <h2>Et si la cigale se mettait elle aussi à l’abri ?</h2>
-        <p>Vous qui Pensez investir locatif et grâce à Pretto faites une simulation précise</p>
+        <img src="@/assets/cicadaResult.png" class="img-result" />
+        <p>
+          Vous êtes un bon vivant et vous dépensez sans compter quand il s’agit de faire plaisir ? Si les idées de réduire votre confort de vie et devoir vous limiter dans vos sorties ne vous enchantent pas, <strong>vous êtes une cigale.</strong>
+        </p>
+        <p>
+          Pas de panique ! Pour continuer à maintenir ce train de vie, tout en commençant à vous mettre à l’abri, optez pour <strong>la location et un investissement locatif</strong> plutôt qu’acheter. 
+        </p>
         <button class="contact">Contacter un expert Pretto</button>
+
       </div>
     </div>
   </div>
@@ -492,13 +414,13 @@ html {
 }
 
 .row-inputs > div {
-  max-width: 200px;
+  max-width: 360px;
 }
 
 .submit {
   margin: 16px 0;
   font-size: 2rem;
-  padding: 8px;
+  padding: 24px;
   width: 300px;
   background-color: rgb(252, 92, 99);
   border-radius: 8px;
@@ -514,13 +436,12 @@ html {
 .images {
   display: flex;
   justify-content: space-between;
-  width: 80%;
-  margin-top: 40px;
+  margin-top: 64px;
 }
 
 .images img {
-  width: 200px;
-  height: 200px;
+  width: 400px;
+  height: 400px;
 }
 
 table {
@@ -541,21 +462,82 @@ td {
 }
 
 .contact {
-  background-color: indigo;
+  margin: 128px;
+  min-width: 300px;
+  min-height: 60px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  font-weight: 700;
   color: white;
-  padding: 8px;
+  background-color:   ;
+background: linear-gradient(90deg, rgba(129,230,217,1) 0%, rgba(79,209,197,1) 100%);
   border: none;
+  border-radius: 1000px;
+  box-shadow: 12px 12px 24px rgba(79,209,197,.64);
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 24px;
+  }
+
+.contact::before {
+content: '';
+  border-radius: 1000px;
+  min-width: calc(300px + 12px);
+  min-height: calc(60px + 12px);
+  border: 6px solid #00FFCB;
+  box-shadow: 0 0 60px rgba(0,255,203,.64);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all .3s ease-in-out 0s;
 }
+
+.contact::after {
+  content: '';
+  width: 30px; height: 30px;
+  border-radius: 100%;
+  border: 6px solid #00FFCB;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
+}
+
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+}
+
 
 .choose {
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-bottom: 24px;
 }
+
+
 .choose button {
   width: 300px;
   padding: 24px;
   font-size: 2rem;
+  border: 1px solid grey;
 }
 
 .choose button:hover {
@@ -564,6 +546,11 @@ td {
 
 .choose button + button {
   margin-left: 16px;
+}
+
+.img-result {
+  width: 300px;
+  height: auto;
 }
 
 ul {
