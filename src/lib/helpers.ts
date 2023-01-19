@@ -44,7 +44,7 @@ const nplusone = (obj: any, interestRate: number, insuranceRate: number, growthR
 
 export const finalArray = (duration: any, goodPrice: any, contribution: any, rent: any, interestRate: number, insuranceRate: number, growthRate: number): any => {
   const principal = goodPrice * (1 + NOTARY_FEES_RATE) - contribution;
-  const payment = computePayment({ duration: duration*12, rate: interestRate, principal });
+  const payment = computePayment({ duration: duration, rate: interestRate, principal });
   const interests = (interestRate) * principal;
   const buyCosts = (principal * BUY_COST_RATE) / 12;
   const res = [
@@ -54,7 +54,7 @@ export const finalArray = (duration: any, goodPrice: any, contribution: any, ren
         interests: interests,
         insurance: insuranceRate * principal,
         principal: principal,
-        costs: buyCosts,
+        costs: goodPrice * NOTARY_FEES_RATE + buyCosts,
         totalCosts: interests + buyCosts,
         capital: goodPrice - principal,
         goodPrice: goodPrice
@@ -67,7 +67,7 @@ export const finalArray = (duration: any, goodPrice: any, contribution: any, ren
       }
     }
   ];
-  for (let i = 0; i < duration * 12; i++) {
+  for (let i = 0; i < duration; i++) {
     res.push(nplusone(res[i], interestRate, insuranceRate, growthRate));
   }
   return res;
