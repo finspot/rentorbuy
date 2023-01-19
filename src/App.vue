@@ -1,20 +1,5 @@
 <template>
   <div class="app">
-    <div class="ui secondary menu">
-      <div class="left menu">
-        <img alt="Pretto logo" src="@/assets/logo-pretto.png" style="text-align: left"/>
-      </div>
-      <a class="item">
-        <router-link to="/">Calculette</router-link>
-      </a>
-      <a class="item">
-        <router-link to="/about">Données</router-link>
-      </a>
-      <a class="item">
-        <router-link to="/old">Avec estimations</router-link>
-      </a>
-    </div>
-    <div class="ui divider"></div>
     <router-view />
   </div>
 </template>

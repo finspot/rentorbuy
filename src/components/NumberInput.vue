@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 10px; margin-right: 5px">
+  <div>
     <div style="margin-bottom: 5px">
       <label>{{ label }}</label>
     </div>

@@ -4,6 +4,36 @@
       msg="Welcome to the Rent Or Buy calculator"
       style="padding: 30px"
     /> -->
+    <div class="landing">
+      <h1 style="font-size: 5rem">Acheter ou louer en 2023 ?</h1>
+      <h2>Découvrez si vous devriez plutôt être une cigale ou une fourmi pour votre futur
+  projet immobilier</h2>
+      <div class="row-inputs">
+        <number-input
+          :value="price"
+          label="Prix du bien visé"
+          @input="price = $event"
+          :placeholder="computedPrice"
+        />
+        <number-input
+          :value="contribution"
+          label="Apport possible"
+          @input="contribution = $event"
+        />
+        <number-input
+          :value="zipcode"
+          label="Code postal"
+          @input="changeZipcode($event)"
+          rightLabel="null"
+        />
+      </div>
+      <button class="submit" v-on:click="handleScroll">Voir le résultat</button>
+      <div class="images">
+        <img src="@/assets/cicada.png" />
+        <img src="@/assets/house.png" />
+        <img src="@/assets/ant.png" />
+      </div>
+    </div>
     <div class="ui three columns centered grid">
       <div class="ui side column">
         <li class="ui card">
@@ -134,6 +164,7 @@
             :min="0"
             :max="50"
             rightLabel="%"
+            v-
             label="Croissance du prix du bien"
             @input="homePriceGrowthRate = $event / 10"
           />
@@ -184,7 +215,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import HelloWorld from "@/components/HelloWorld.vue";
 import NumberInput from "@/components/NumberInput.vue";
 import SliderInput from "@/components/SliderInput.vue";
@@ -237,6 +268,9 @@ export default class Home extends Vue {
   private backgroundUrl = require("@/assets/background-image.png");
   private showAdvanced = false;
 
+  get computedWatchedVars() {
+    return [this.price, this.contribution, this.zipcode]
+  }
   get computedAgencyFees(): number {
     return +this.agencyFees || this.computedRent
   }
@@ -414,10 +448,61 @@ export default class Home extends Vue {
     return res['rent']['finalSavings'] + res['rent']['initialCosts'] + res['rent']['recuringCosts'] >=
       res['purchase']['finalSavings'] + res['purchase']['initialCosts'] + res['purchase']['recuringCosts']
   }
+
+  public handleScroll() {
+    if (this.price && this.contribution && this.zipcode) {
+      window.scrollTo(0, 1000)
+    }
+  }
+  
 }
 </script>
 
 <style>
+html {
+  scroll-behavior: smooth;
+}
+
+.landing {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20%;
+}
+.row-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: auto;
+}
+
+.submit {
+  margin: 16px 0;
+  font-size: 2rem;
+  padding: 8px;
+  width: 300px;
+  background-color: rgb(252, 92, 99);
+  border-radius: 8px;
+  box-shadow: none;
+  border: none;
+  color: white;
+}
+
+.submit:hover {
+  cursor: pointer;
+}
+
+.images {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.images img {
+  width: 200px;
+  height: 200px;
+}
+
 ul {
   list-style-type: none;
   padding: 0;
