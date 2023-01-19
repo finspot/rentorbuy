@@ -6,8 +6,7 @@
     /> -->
     <div class="landing">
       <h1 style="font-size: 5rem">Acheter ou louer en 2023 ?</h1>
-      <h2>Découvrez si vous devriez plutôt être une cigale ou une fourmi pour votre futur
-  projet immobilier</h2>
+      <h2>Découvrez si vous êtes plutôt une cigale ou une fourmi</h2>
       <div class="row-inputs">
         <number-input
           :value="price"
@@ -479,7 +478,12 @@ html {
 .row-inputs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  width: auto;
+  width: 100%;
+  margin: 24px 0;
+}
+
+.row-inputs > div {
+  max-width: 200px;
 }
 
 .submit {
@@ -502,6 +506,7 @@ html {
   display: flex;
   justify-content: space-between;
   width: 80%;
+  margin-top: 40px;
 }
 
 .images img {
