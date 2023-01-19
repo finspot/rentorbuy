@@ -8,7 +8,7 @@
   import LineChart from './LineChart.js'
 
   export default {
-    props: ['purchaseCosts', 'rentalCosts', 'labels'],
+    props: ['purchaseCapital', 'rentalCapital', 'labels'],
     components: {
       LineChart
     },
@@ -18,13 +18,13 @@
           labels: this.labels,
           datasets: [
             {
-              label: "Coûts d'achat",
-              borderColor: '#88d6b3',
-              data: this.purchaseCosts
+              label: "Scénario achat",
+              borderColor: '#0A806B',
+              data: this.purchaseCapital
             }, {
-              label: "Coûts de location",
-              borderColor: '#bfe9ec',
-              data: this.rentalCosts
+              label: "Scénario location",
+              borderColor: 'rgb(252, 92, 99)',
+              data: this.rentalCapital
             }
           ]
         }

@@ -1,9 +1,5 @@
 <template>
   <div class="home">
-    <!-- Comment <HelloWorld
-      msg="Welcome to the Rent Or Buy calculator"
-      style="padding: 30px"
-    /> -->
     <div class="landing">
       <h1 style="font-size: 5rem">Acheter ou louer en 2023 ?</h1>
       <h2>Découvrez si vous êtes plutôt une cigale ou une fourmi</h2>
@@ -36,7 +32,7 @@
     <div class="ui three columns centered grid">
       <div>
         <h2>
-          Vous êtes rentable au bout de {{ formatNumber(equilibrium) }} ans
+          Dans le scénario achat, vous êtes rentable au bout de {{ formatNumber(equilibrium) }} ans
         </h2>
         <table>
           <thead>
@@ -45,15 +41,14 @@
             <th>Achat</th>
           </thead>
           <tbody>
-            <tr>
-              <td>Total dépensé</td>
-              <td>10 000€</td>
-              <td>70 000€</td>
+            <tr> <td>Total dépensé</td>
+              <td>{{ formatNumber(computedFinalArray[equilibrium*12].rent.totalCosts) }}€</td>
+              <td>{{ formatNumber(computedFinalArray[equilibrium*12].buy.totalCosts) }}€</td>
             </tr>
             <tr>
               <td>Capital total</td>
-              <td>20 000€</td>
-              <td>124 000€</td>
+              <td>{{ formatNumber(computedFinalArray[equilibrium*12].rent.capital + computedFinalArray[equilibrium*12].rent.cashFlowCapital) }}€</td>
+              <td>{{ formatNumber(computedFinalArray[equilibrium*12].buy.capital) }}€</td>
             </tr>
           </tbody>
         </table>
@@ -173,12 +168,12 @@
         </li>
       </div>
       <div class="ui six wide column">
-        <chart :purchaseCosts="purchaseCostsArray" :rentalCosts="rentalCostsArray" :labels="labels" />
-        <div class="ui centered card" style="margin-bottom: 30px">
+        <div class="ui centered" style="margin-bottom: 30px">
           <div style="margin: 10px">
-            <h4>Il vaut mieux acheter à partir de : <strong>{{ formatNumber(equilibrium) }} ans</strong></h4>
+            <h4><strong>Capital généré dans les deux scénarios</strong></h4>
           </div>
         </div>
+        <chart :purchaseCapital="purchaseCapitalArray" :rentalCapital="rentalCapitalArray" :labels="labels" />
       </div>
       <div class="ui side column">
         <li class="ui card">
@@ -234,7 +229,7 @@
             :value="computedMortgageRate * 12000"
             label="Taux du prêt"
             :min="0"
-            :max="50"
+            :max="100"
             rightLabel="%"
             id="mortgageRate"
             @input="mortgageRate = $event / 10"
@@ -276,8 +271,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue";
+import { Component, Vue } from "vue-property-decorator";
 import NumberInput from "@/components/NumberInput.vue";
 import SliderInput from "@/components/SliderInput.vue";
 import Chart from "@/components/Chart.vue";
@@ -286,10 +280,10 @@ import PropertyCharges from "@/config/property_charges.json";
 import PropertyTaxes from "@/config/property_tax.json";
 import PurchasePriceSqm from "@/config/purchase_price_sqm.json";
 import RentPriceSqm from "@/config/rent_price_sqm.json";
+import { finalArray } from "@/lib/helpers.ts";
 
 @Component({
   components: {
-    HelloWorld,
     'number-input': NumberInput,
     'slider-input': SliderInput,
     chart: Chart
@@ -297,11 +291,11 @@ import RentPriceSqm from "@/config/rent_price_sqm.json";
 })
 export default class Home extends Vue {
 
-  private HOME_PRICE_GROWTH_RATE = 3;
+  private HOME_PRICE_GROWTH_RATE = 1;
   private INFLATION_RATE = 2;
   private INSURANCE_RATE = 0.2;
   private MORTGAGE_DURATION = 25;
-  private MORTGAGE_RATE = 1.5;
+  private MORTGAGE_RATE = 3.5;
   private RENT_GROWTH_RATE = 1;
   private SAVINGS_RETURN_RATE = 1;
   private agencyFees: any = null;
@@ -409,18 +403,20 @@ export default class Home extends Vue {
   get computedSavingsReturnRate(): number {
     return (this.savingsReturnRate && +this.savingsReturnRate / 100) || this.SAVINGS_RETURN_RATE / 100
   }
-  get costs(): Array<object> {
-    return [...Array(25).keys()].map(this.getHashOfCosts)
-  }
   get department(): string {
     const zip = (this.zipcode && this.zipcode.toString()) || "75"
     return zip.slice(0, 2) == "97" ? zip.slice(0, 3) : zip.slice(0, 2)
   }
   get equilibrium(): number {
-    return this.costs.findIndex(this.purchaseIsFavorable)
+    let i = 0;
+    while(i < 25) {
+      if(this.purchaseCapitalArray[i] > this.rentalCapitalArray[i]) return i;
+      i++
+    }
+    return i;
   }
   get labels(): Array<number> {
-    return [...Array(25).keys()]
+    return [...Array(26).keys()]
   }
   get principal(): number {
     if (this.purchaseSurface || this.price) {
@@ -433,11 +429,14 @@ export default class Home extends Vue {
       return 0
     }
   }
-  get purchaseCostsArray(): Array<number> {
-    return [...Array(25).keys()].map(i => this.getHashOf(this.getHashOfCosts(i))['purchase']['initialCosts'] + this.getHashOf(this.getHashOfCosts(i))['purchase']['recuringCosts'] + this.getHashOf(this.getHashOfCosts(i))['purchase']['finalSavings'])
+  get computedFinalArray(): Array<any> {
+    return finalArray(this.MORTGAGE_DURATION, this.price, this.contribution, this.computedRent, this.computedMortgageRate, this.computedInsuranceRate, this.computedHomePriceGrowthRate)
   }
-  get rentalCostsArray(): Array<number> {
-    return [...Array(25).keys()].map(i => this.getHashOf(this.getHashOfCosts(i))['rent']['initialCosts'] + this.getHashOf(this.getHashOfCosts(i))['rent']['recuringCosts'] + this.getHashOf(this.getHashOfCosts(i))['rent']['finalSavings'])
+  get purchaseCapitalArray(): Array<number> {
+    return [...Array(26).keys()].map(i => this.computedFinalArray[i*12].buy.capital)
+  }
+  get rentalCapitalArray(): Array<number> {
+    return [...Array(26).keys()].map(i => +this.computedFinalArray[i*12].rent.capital + this.computedFinalArray[i*12]?.rent.cashFlowCapital)
   }
 
   public changeZipcode(input: number): void {
@@ -460,58 +459,6 @@ export default class Home extends Vue {
     }
     return stringResult
   }
-  public yearlySavings(duration: number): number {
-    return this.purchaseRecuringCosts(duration) - this.rentRecuringCosts(duration)
-  }
-  public rentFinalSavings(duration: number): number {
-    const returnRate = this.computedSavingsReturnRate;
-    const contribution = this.contribution;
-    const yearlySavings = this.yearlySavings(duration);
-    const investmentGain = yearlySavings * ( ( (1 + returnRate) * ( (1 + returnRate) ** duration - 1 ) / returnRate ) - duration );
-    return contribution * ( (1 + returnRate) ** duration ) + investmentGain
-  }
-  public rentRecuringCosts(duration: number): number {
-    if (duration == 0) { return 0 }
-    else {
-      return (12 * this.computedRent * ((1 + this.computedRentGrowthRate)**(duration - 1)) + this.computedHousingTax * (1 + this.computedInflationRate)**(duration - 1))
-    }
-  }
-  public addRecuringCosts(recuringCosts: any, duration: number): number {
-    let sum = 0
-    for (let i=1; i<duration+1; i++) {
-      sum += recuringCosts(i)
-    }
-    return sum
-  }
-  public purchaseRecuringCosts(duration: number): number {
-    if (duration == 0) { return 0 }
-    else {
-      return ( (this.computedPayment + this.computedInsuranceRate * this.principal) * 12 + (this.computedPropertyCharges + this.computedHousingTax + this.computedPropertyTax + this.computedMaintenance) * (1 + this.computedInflationRate)**(duration - 1))
-    }
-  }
-  public remainingPrincipal(duration: number): number {
-    return this.computedPayment * ( 1 - (1 + this.computedMortgageRate)**( duration * 12 - this.computedMortgagoDuration ) ) / this.computedMortgageRate;
-  }
-  public getHashOfCosts(i: number): object {
-    const duration = i;
-    return {
-      rent: {
-        finalSavings: - this.rentFinalSavings(duration),
-        initialCosts: this.computedAgencyFees,
-        recuringCosts: this.addRecuringCosts(this.rentRecuringCosts, duration)
-      },
-      purchase: {
-        finalSavings: - (this.computedPrice * ((1 + this.computedHomePriceGrowthRate)**(duration - 1)) - this.remainingPrincipal(duration)),
-        initialCosts: this.computedGuarantyFees + this.computedNotaryFees,
-        recuringCosts: this.addRecuringCosts(this.purchaseRecuringCosts, duration)
-      }
-    }
-  }
-  public purchaseIsFavorable(res: any) {
-    return res['rent']['finalSavings'] + res['rent']['initialCosts'] + res['rent']['recuringCosts'] >=
-      res['purchase']['finalSavings'] + res['purchase']['initialCosts'] + res['purchase']['recuringCosts']
-  }
-
   public handleScroll() {
     if (this.price && this.contribution && this.rent) {
       window.scrollTo(0, 950)
