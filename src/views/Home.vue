@@ -20,17 +20,43 @@
           @input="contribution = $event"
         />
         <number-input
-          :value="zipcode"
-          label="Code postal"
-          @input="changeZipcode($event)"
-          rightLabel="null"
-        />
+            :value="rent"
+            label="Loyer visé"
+            @input="rent = $event"
+            :placeholder="computedRent"
+          />
       </div>
       <button class="submit" v-on:click="handleScroll">Voir le résultat</button>
       <div class="images">
         <img src="@/assets/cicada.png" />
         <img src="@/assets/house.png" />
         <img src="@/assets/ant.png" />
+      </div>
+    </div>
+    <div class="ui three columns centered grid">
+      <div>
+        <h2>
+          Vous êtes rentable au bout de {{ formatNumber(equilibrium) }} ans
+        </h2>
+        <table>
+          <thead>
+            <th></th>
+            <th>Location</th>
+            <th>Achat</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total dépensé</td>
+              <td>10 000€</td>
+              <td>70 000€</td>
+            </tr>
+            <tr>
+              <td>Capital total</td>
+              <td>20 000€</td>
+              <td>124 000€</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="ui three columns centered grid">
@@ -216,6 +242,32 @@
         </li>
       </div>
     </div>
+    <div class="ui three columns centered grid">
+      <div class="ant">
+        <h2>Il est grand temps que la fourmi prépare les beaux jours</h2>
+        <p>Vous qui travaillez dur et épargnez pour être à l’abri de besoins, achetez votre résidence principale.</p>
+        <div class="good-news">
+          <h3>
+  
+            Bonne nouvelle !
+          </h3>
+          <p>Pretto peut vous accompagner pour concrétiser votre objectif. Grâce à notre simulateur, découvrez votre capacité d’emprunt</p>
+          <button class="contact">Contacter un expert Pretto</button>
+        </div>
+        <h2>A propos de notre simulateur Acheter ou louer ?</h2>
+        <p>
+          Acheter ou louer est une question que tous les ménages se posent un jour ou l’autre. Il n'y a ni bonne réponse, ni réponse unique car cela dépend de plusieurs facteurs comme les revenus, les besoins en matière de logement, les projets à long terme, les prix de l'immobilier et les taux d'intérêts.  Acheter peut être avantageux car cela permet de devenir propriétaire de son propre logement et de commencer à se constituer un patrimoine. Cependant, cela peut aussi être plus coûteux à long terme, compte tenu des coûts d'entretien, des impôts ou tout autre frais.  Louer est souvent plus abordable à court terme, mais ne permet pas de capitaliser à long terme. Il est donc important de bien réfléchir à ses besoins et à ses moyens avant de prendre une décision.
+        </p>
+        <h2>
+          Comment fonctionne notre simulateur Acheter ou louer ?
+        </h2>
+      </div>
+      <div class="cicada">
+        <h2>Et si la cigale se mettait elle aussi à l’abri ?</h2>
+        <p>Vous qui Pensez investir locatif et grâce à Pretto faites une simulation précise</p>
+        <button class="contact">Contacter un expert Pretto</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -272,6 +324,7 @@ export default class Home extends Vue {
   private zipcode: any = null;
   private backgroundUrl = require("@/assets/background-image.png");
   private showAdvanced = false;
+
 
   get computedWatchedVars() {
     return [this.price, this.contribution, this.zipcode]
@@ -455,8 +508,8 @@ export default class Home extends Vue {
   }
 
   public handleScroll() {
-    if (this.price && this.contribution && this.zipcode) {
-      window.scrollTo(0, 1000)
+    if (this.price && this.contribution && this.rent) {
+      window.scrollTo(0, 950)
     }
   }
   
@@ -512,6 +565,30 @@ html {
 .images img {
   width: 200px;
   height: 200px;
+}
+
+table {
+  width: 600px;
+  font-size: 1.5rem;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 4px 0;
+}
+
+.good-news {
+  padding: 32px;
+  border: 1px solid grey;
+}
+
+.contact {
+  background-color: indigo;
+  color: white;
+  padding: 8px;
+  border: none;
 }
 
 ul {
