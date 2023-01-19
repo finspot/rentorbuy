@@ -25,6 +25,34 @@
       <button class="submit" v-on:click="handleScroll">Voir le résultat</button>
       <div class="images">
         <img src="@/assets/cicada.png" />
+        <p class="poem">
+          La cigale, joyeuse et insouciante,<br/>
+          Voulait un bel appartement pour vivre à son aise.<br/>
+          Elle se dit : "Pourquoi payer un loyer chaque mois,<br/>
+          Si je peux acheter et économiser à long terme ?"
+          <br/><br/>
+
+          La fourmi, sage et prévoyante,<br/>
+          Lui dit : "Avant de prendre une telle décision,<br/>
+          Pense à ta situation financière,<br/>
+          Et à ta volonté de rester dans cette région."
+          <br/><br/>
+          La cigale réfléchit et se dit :<br/>
+          "Si je dois rester des années ici,<br/>
+          L'achat sera peut-être plus avantageux,<br/>
+          Mais il faut que je puisse rembourser un prêt."
+          <br/><br/>
+          La fourmi lui dit : "Rappelle-toi aussi,<br/>
+          Que tu seras responsable des réparations,<br/>
+          Et de l'entretien de cet appartement,<br/>
+          Si tu décides de devenir propriétaire."
+          <br/><br/>
+          La cigale réfléchit encore,<br/>
+          Et finit par comprendre,<br/>
+          Qu'il faut être raisonnable,<br/>
+          Et bien réfléchir avant de prendre une telle décision.
+          <br/><br/>
+        </p>
         <img src="@/assets/ant.png" />
       </div>
     </div>
@@ -383,7 +411,7 @@ export default class Home extends Vue {
   }
   public handleScroll() {
     if (this.price && this.contribution && this.rent) {
-      window.scrollTo(0, 950)
+      window.scrollTo(0, 1050)
     }
   }
 
@@ -400,7 +428,7 @@ html {
 }
 
 .landing {
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -436,12 +464,19 @@ html {
 .images {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 64px;
 }
 
+.poem {
+  font-size: 1.1rem;
+  font-style: italic;
+  text-align: left;
+}
+
 .images img {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
 }
 
 table {
