@@ -2,7 +2,7 @@
   <div class="home">
     <div class="landing">
       <h1 style="font-size: 5rem">Acheter ou louer en 2023 ?</h1>
-      <h2>Découvrez si vous êtes plutôt une cigale ou une fourmi</h2>
+      <h2>Choisissez votre camp entre la cigale ou la fourmi</h2>
       <div class="row-inputs">
         <number-input
           :value="price"
@@ -25,6 +25,34 @@
       <button class="submit" v-on:click="handleScroll">Voir le résultat</button>
       <div class="images">
         <img src="@/assets/cicada.png" />
+        <p class="poem">
+          La cigale, joyeuse et insouciante,<br/>
+          Voulait un bel appartement pour vivre à son aise.<br/>
+          Elle se dit : "Pourquoi payer un loyer chaque mois,<br/>
+          Si je peux acheter et économiser à long terme ?"
+          <br/><br/>
+
+          La fourmi, sage et prévoyante,<br/>
+          Lui dit : "Avant de prendre une telle décision,<br/>
+          Pense à ta situation financière,<br/>
+          Et à ta volonté de rester dans cette région."
+          <br/><br/>
+          La cigale réfléchit et se dit :<br/>
+          "Si je dois rester des années ici,<br/>
+          L'achat sera peut-être plus avantageux,<br/>
+          Mais il faut que je puisse rembourser un prêt."
+          <br/><br/>
+          La fourmi lui dit : "Rappelle-toi aussi,<br/>
+          Que tu seras responsable des réparations,<br/>
+          Et de l'entretien de cet appartement,<br/>
+          Si tu décides de devenir propriétaire."
+          <br/><br/>
+          La cigale réfléchit encore,<br/>
+          Et finit par comprendre,<br/>
+          Qu'il faut être raisonnable,<br/>
+          Et bien réfléchir avant de prendre une telle décision.
+          <br/><br/>
+        </p>
         <img src="@/assets/ant.png" />
       </div>
     </div>
@@ -188,6 +216,32 @@
         <button class="contact">Contacter un expert Pretto</button>
 
       </div>
+    </div>
+    <div class="article">
+      <p>
+        Acheter ou louer en 2023 ? Vous vous êtes probablement déjà posés cette question, et vous avez bien raison ! Pour chacune de ces options, Pretto vous présente les avantages et les inconvénients pour vous aider à vous décider.
+      </p>
+      <h3>En quoi l'achat est-il intéressant ?</h3>
+      <p>
+        Le principal avantage est de devenir propriétaire de son logement. Vous pourrez modifier votre bien librement sans devoir demander d'autorisation. Les mensualités que vous rembourserez pour cette acquisition vous permettront d'acquérir du patrimoine. De plus, cet actif peut prendre de la valeur au fil des années. Ainsi, vous pourrez réaliser une plus-value lors de la revente du bien.
+        <br/>
+      </p>
+      <p>Cependant, l'achat implique aussi des coûts importants :</p>
+      <p>
+        - le coût du crédit, lié à la souscription d'un prêt<br/>
+        - les frais de notaire<br/>
+        - les frais de garantie<br/>
+        - des éventuels coûts de rénovation, pour remettre le logement à son goût<br/>
+      </p>
+      <p>Il est donc très important de bien évaluer sa capacité financière avant de se lancer ou non dans l'achat d'un bien immobilier.</p>
+      <h3>Faut-il plutôt louer dans ce cas ?</h3>
+      <p>
+        La location permet d'éviter d'engager des sommes importantes en une fois. Généralement, un loyer est moins élevé qu'une mensualité de prêt immobilier. De plus, en cas de problème ou de dégât dans le logement, c'est généralement le propriétaire qui est responsable de les réparer.
+        <br/>
+        Cependant, en tant que locataire, vous n'êtes pas propriétaire. Vous ne pouvez donc pas effectuer des modifications ou des rénovations sans l'autorisation du bailleur. Vous n'investissez pas non plus sur votre patrimoine personnel puisque vous enrichissez votre bailleur, à qui vous fournissez un rendement.
+        <br/>
+        En conclusion, acheter ou louer un bien immobilier dépend de votre situation personnelle et financière. Si vous avez les moyens financiers et que vous souhaitez devenir propriétaire, l'achat peut être une option intéressante. Sinon, la location peut être plus adaptée. Pour faire un bilan personnalisé sur votre situation,  consultez des professionnels de l'immobilier pour vous aider à évaluer votre capacité financière.
+      </p>
     </div>
   </div>
 </template>
@@ -371,7 +425,7 @@ export default class Home extends Vue {
   }
   public handleScroll() {
     if (this.price && this.contribution && this.rent) {
-      window.scrollTo(0, 950)
+      window.scrollTo(0, 1050)
     }
   }
 
@@ -388,7 +442,7 @@ html {
 }
 
 .landing {
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -424,12 +478,19 @@ html {
 .images {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 64px;
 }
 
+.poem {
+  font-size: 1.1rem;
+  font-style: italic;
+  text-align: left;
+}
+
 .images img {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
 }
 
 table {
@@ -539,6 +600,19 @@ content: '';
 .img-result {
   width: 300px;
   height: auto;
+}
+
+.article {
+  padding: 24px;
+  margin: 100px;
+  border: 1px solid grey;
+  border-radius: 8px;
+  text-align: left;
+  font-size: 1.2rem;
+}
+
+.article h3 {
+  margin-bottom: 16px;
 }
 
 ul {
