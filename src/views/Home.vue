@@ -243,7 +243,11 @@
       </div>
     </div>
     <div class="ui three columns centered grid">
-      <div class="ant">
+      <div class="choose">
+        <button v-on:click="toggleChoice('ant')" :style="{ backgroundColor: choice === 'ant' ? '#0A806B' : 'white' }">FOURMI</button>
+        <button v-on:click="toggleChoice('cicada')" :style="{ backgroundColor: choice !== 'ant' ? 'rgb(252, 92, 99)' : 'white' }">CIGALE</button>
+      </div>
+      <div class="ant" :style="{ display: choice === 'ant' ? 'block' : 'none' }">
         <h2>Il est grand temps que la fourmi prépare les beaux jours</h2>
         <p>Vous qui travaillez dur et épargnez pour être à l’abri de besoins, achetez votre résidence principale.</p>
         <div class="good-news">
@@ -262,7 +266,7 @@
           Comment fonctionne notre simulateur Acheter ou louer ?
         </h2>
       </div>
-      <div class="cicada">
+      <div class="cicada" :style="{ display: choice !== 'ant' ? 'block' : 'none' }">
         <h2>Et si la cigale se mettait elle aussi à l’abri ?</h2>
         <p>Vous qui Pensez investir locatif et grâce à Pretto faites une simulation précise</p>
         <button class="contact">Contacter un expert Pretto</button>
@@ -324,6 +328,7 @@ export default class Home extends Vue {
   private zipcode: any = null;
   private backgroundUrl = require("@/assets/background-image.png");
   private showAdvanced = false;
+  public choice: any = 'fourmi'
 
 
   get computedWatchedVars() {
@@ -512,6 +517,10 @@ export default class Home extends Vue {
       window.scrollTo(0, 950)
     }
   }
+
+  public toggleChoice(choice: any) {
+    this.choice = choice
+  }
   
 }
 </script>
@@ -589,6 +598,25 @@ td {
   color: white;
   padding: 8px;
   border: none;
+}
+
+.choose {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.choose button {
+  width: 300px;
+  padding: 24px;
+  font-size: 2rem;
+}
+
+.choose button:hover {
+  cursor: pointer;
+}
+
+.choose button + button {
+  margin-left: 16px;
 }
 
 ul {
